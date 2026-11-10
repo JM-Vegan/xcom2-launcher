@@ -1,17 +1,18 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using JR.Utils.GUI.Forms;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
+using XCOM2Launcher.Classes.Mod;
 using XCOM2Launcher.Mod;
 using XCOM2Launcher.XCOM;
-using JR.Utils.GUI.Forms;
-using XCOM2Launcher.Classes.Mod;
 
 namespace XCOM2Launcher.Forms
 {
@@ -24,6 +25,8 @@ namespace XCOM2Launcher.Forms
         private CancellationTokenSource ModUpdateCancelSource;
         private bool IsModUpdateTaskRunning => (ModUpdateTask != null && !ModUpdateTask.IsCompleted);
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public Settings Settings { get; set; }
 
         public MainForm(Settings settings)
