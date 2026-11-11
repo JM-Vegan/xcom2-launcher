@@ -164,48 +164,41 @@ namespace XCOM2Launcher.Mod
 
         private string RTFEvaluator(Match match)
         {
-            String output;
-            if (match.Groups[2].Value.StartsWith("url"))
+   
+            string tag = match.Groups[2].Value;
+            string close = match.Groups[1].Value;
+
+            if (tag.StartsWith("url"))
             {
-                if (match.Groups[1].Value == "/")
-                {
+                if (close == "/")
                     return @"}}}";
-                }
-                else if (match.Groups[2].Value.Length > 3 && match.Groups[2].Value[3] == '=')
-                {
-                    return @"{\field{\*\fldinst{HYPERLINK """ + match.Groups[2].Value.Substring(4) + @"""}}{\fldrslt{\ul ";
-                }
+                else if (tag.Length > 3 && tag[3] == '=')
+                    return @"{\field{\*\fldinst{HYPERLINK """ + tag.Substring(4) + @"""}}{\fldrslt{\ul ";
                 else
-                {
                     return @"{{{";
-                }
             }
-            else
+
+            string output;
+            switch (tag)
             {
-                switch (match.Groups[2].Value)
-                {
-                    case "h1":
-                        output = @"{\fs20 \b ";
-                        break;
-                    case "strike":
-                        output = @"{\strike ";
-                        break;
-                    case "b":
-                        output = @"{\b ";
-                        break;
-                    case "i":
-                        output = @"{\i ";
-                        break;
-                    case "u":
-                        output = @"{\ul ";
-                        break;
-                    default:
-                        output = "";
-                        break;
-                }
-            }
-            if (output != "" && match.Groups[1].Value == "/")
+                case "h1":  output = @"{\fs24 \b "; break;
+                case "h2":  output = @"{\fs22 \b "; break;
+                case "h3":  output = @"{\fs20 \b "; break;
+                case "b":   output = @"{\b "; break;
+                case "i":   output = @"{\i "; break;
+                case "u":   output = @"{\ul "; break;
+                case "strike": output = @"{\strike "; break;
+                case "*":   output = @"{\bullet \par }"; break;
+                case "list": output = @"{\list \par }"; break;
+                case "/list": output = @"}"; break;
+                case "quote": output = @"{\cf2 \par \qn 1\ql "; break;
+                case "/quote": output = @"{\cf0 \par }"; break;
+                default:    output = ""; break;
+            }   
+
+            if (output != "" && close == "/")
                 output = "}";
+
             return output;
         }
 

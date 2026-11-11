@@ -672,8 +672,16 @@ namespace XCOM2Launcher.Forms
 
             if (m != null)
             {
-                modinfo_info_DescriptionRichTextBox.Font = DefaultFont;
-                modinfo_info_DescriptionRichTextBox.Rtf = m.GetDescription(true);
+                try
+                {
+                    modinfo_info_DescriptionRichTextBox.Font = DefaultFont;
+                    modinfo_info_DescriptionRichTextBox.Rtf = m.GetDescription(true);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn($"Failed to set RTF for mod: {m.Name}", ex);
+                    modinfo_info_DescriptionRichTextBox.Text = m.Description;
+                }
             }
         }
 

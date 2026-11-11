@@ -8,13 +8,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!-- Fuerza el uso del lenguaje C# más reciente (C# 14) -->
     <LangVersion>latest</LangVersion> 
     <StartupObject>XCOM2Launcher.Program</StartupObject>
     <ApplicationIcon>Resources\xcom.ico</ApplicationIcon>
-    <AssemblyTitle>XCOM2 Alternative Mod Launcher</AssemblyTitle>
-    <NoWin32Manifest>true</NoWin32Manifest>
-    <PackageOutputPath />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
