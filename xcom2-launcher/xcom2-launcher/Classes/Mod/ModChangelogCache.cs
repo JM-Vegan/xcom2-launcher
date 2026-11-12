@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,10 +28,10 @@ namespace XCOM2Launcher.Mod
 
             try
             {
-                using (var client = new WebClient())
+                using (var client = new HttpClient())
                 {
                     var htmlstrip = new Regex("<.*?>", RegexOptions.Compiled);
-                    var changelogRaw = await client.DownloadStringTaskAsync("https://steamcommunity.com/sharedfiles/filedetails/changelog/" + workshopID);
+                    var changelogRaw = await client.GetStringAsync("https://steamcommunity.com/sharedfiles/filedetails/changelog/" + workshopID);
 
                     var output = new StringBuilder();
                     foreach (Match m in Regexp.Matches(changelogRaw))

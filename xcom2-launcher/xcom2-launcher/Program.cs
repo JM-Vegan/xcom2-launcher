@@ -492,23 +492,23 @@ namespace XCOM2Launcher
 
             try
             {
-                using (var client = new System.Net.WebClient())
+                using (var client = new System.Net.Http.HttpClient())
                 {
-                    client.Headers.Add("User-Agent: Other");
+                    client.DefaultRequestHeaders.Add("User-Agent", "Other");
                     GitHub.Release release;
 
                     if (Settings.Instance.CheckForPreReleaseUpdates)
                     {
                         Log.Info("Pre-Release updates enabled");
                         // fetch all releases including pre-releases and select the first/newest 
-                        var jsonAllReleases = client.DownloadString("https://api.github.com/repos/X2CommunityCore/xcom2-launcher/releases");
+                        var jsonAllReleases = client.GetStringAsync("https://api.github.com/repos/X2CommunityCore/xcom2-launcher/releases").GetAwaiter().GetResult();
                         var allReleases = JsonConvert.DeserializeObject<List<GitHub.Release>>(jsonAllReleases);
                         release = allReleases.FirstOrDefault();
                     }
                     else
                     {
                         // fetch latest non-pre-release
-                        var json = client.DownloadString("https://api.github.com/repos/X2CommunityCore/xcom2-launcher/releases/latest");
+                        var json = client.GetStringAsync("https://api.github.com/repos/X2CommunityCore/xcom2-launcher/releases/latest").GetAwaiter().GetResult();
                         release = JsonConvert.DeserializeObject<GitHub.Release>(json);
                     }
 
@@ -544,9 +544,13 @@ namespace XCOM2Launcher
                     }
                 }
             }
-            catch (System.Net.WebException ex)
+            catch (System.Net.Http.HttpRequestException ex)
             {
                 Log.Warn("Web request failed", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Warn("Web request timed out", ex);
             }
             catch (JsonReaderException ex)
             {
